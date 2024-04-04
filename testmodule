@@ -28,7 +28,17 @@ def attendance():
         plt.show()
 import matplotlib.pyplot as plt
 import numpy as np
-import mysql.connector as sql
+import mysql.connector as SQL
+def percentage():
+        roll_num=input("enter the students roll number: ")
+        res3=cur.execute('select * from grades where student_id={}'.format(roll_num))
+        marks=cur.fetchall()
+        total=0
+        j=marks[0]
+        for i in j:
+                total=total+i
+        percent=(total-int(roll_num))/6
+        print("the percentage of the student is: ",percent)
 def report_card():
     roll_num=input("Enter the roll number of the student: ")
     con=sql.connect(host='localhost',user='root',passwd='Captain@123',database='student_management')
@@ -70,16 +80,6 @@ Course={}'''.format(i[1],i[0],i[2],i[3]))
                 total=total+i
     percent=(total-int(roll_num))/6
     print("percentage",percent)
-def percentage():
-        roll_num=input("enter the students roll number: ")
-        res3=cur.execute('select * from grades where student_id={}'.format(roll_num))
-        marks=cur.fetchall()
-        total=0
-        j=marks[0]
-        for i in j:
-                total=total+i
-        percent=(total-int(roll_num))/6
-        print("the percentage of the student is: ",percent)
 
 def insert():
         #roll num, name, age, branch, cs or bio, hindi, kannada or sanskrit, attendance, grades sub 1 to 9,student courses from 5 to 9
