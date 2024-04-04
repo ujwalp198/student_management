@@ -1,0 +1,116 @@
+import mysql.connector
+import pandas
+con=mysql.connector.connect(user='root',host='localhost',passwd='Captain@123',database='student_management')
+cur=con.cursor()
+def is_connected():
+        if con.is_connected():
+                return True
+        else:
+                return False
+def get_data():
+    tablename=input("enter the table name: ")
+    cur = con.cursor()
+    cur.execute("SELECT * FROM {}".format(tablename))
+    data = cur.fetchall()
+    print(data)
+def attendance():
+    studentid=input("Enter the Roll number of the student: ")
+    res=cur.execute("select attendance from attendance where student_id={}".format(studentid))
+    data=cur.fetchall()
+    print(data)
+    import matplotlib.pyplot as plt
+    import numpy as np
+    for i in data:
+        x=np.array([i[0],100-i[0]])
+        mylabels=['Present','Absent']
+        plt.pie(x,labels=mylabels,autopct='%1.1f%%')
+        plt.title('Student attendance')
+        plt.show()
+import matplotlib.pyplot as plt
+import numpy as np
+import mysql.connector as sql
+def report_card():
+    roll_num=input("Enter the roll number of the student: ")
+    con=sql.connect(host='localhost',user='root',passwd='Captain@123',database='student_management')
+    cur=con.cursor()
+    res=cur.execute("select * from student where student_id={}".format(roll_num))
+    data1=cur.fetchall()
+    for i in data1:
+        print('''Student Name:{}\n
+Register Number: {}\n
+Age={}\n
+Course={}'''.format(i[1],i[0],i[2],i[3]))
+    res2=cur.execute('select attendance from attendance where student_id={}'.format(roll_num))
+    data2=cur.fetchall()
+    for i in data2:
+        x=np.array([i[0],100-i[0]])
+        mylabels=['Present','Absent']
+        plt.pie(x,labels=mylabels,autopct='%1.1f%%')
+        plt.title('Student attendance')
+        plt.show()
+    #bar chart showing grades
+    res3=cur.execute('select * from grades where student_id={}'.format(roll_num))
+    marks=cur.fetchall()
+    for marks in marks:
+        print()
+        print('Physics: ',marks[1])
+        print('Chemistry: ',marks[2])
+        print('Maths: ',marks[3])
+        print('English: ',marks[4])
+        print('Biology: ',marks[5])
+        print('CS: ',marks[6])
+        print('Kannada: ',marks[7])
+        print('Hindi: ',marks[8])
+        print('Sanskrit: ',marks[9])
+    res3=cur.execute('select * from grades where student_id={}'.format(roll_num))
+    marks=cur.fetchall()
+    total=0
+    j=marks[0]
+    for i in j:
+                total=total+i
+    percent=(total-int(roll_num))/6
+    print("percentage",percent)
+def percentage():
+        roll_num=input("enter the students roll number: ")
+        res3=cur.execute('select * from grades where student_id={}'.format(roll_num))
+        marks=cur.fetchall()
+        total=0
+        j=marks[0]
+        for i in j:
+                total=total+i
+        percent=(total-int(roll_num))/6
+        print("the percentage of the student is: ",percent)
+
+def insert():
+        #roll num, name, age, branch, cs or bio, hindi, kannada or sanskrit, attendance, grades sub 1 to 9,student courses from 5 to 9
+        roll=input("enter the roll number os the student: ")
+        name=input("enter the name of the student: ")
+        age=input("enter the age of the student: ")
+        branch=input("enter the branch (CS/BIO) the student: ")
+        hindi1=input("enter the langage(hindi,kannada,sanskrit) the student: ")
+        attendance=input("enter the attendance the student: ")
+        physics=input("enter the marks in physics: ")
+        chemistry=input("enter the marks in chemistry: ")
+        maths=input("enter the marks in maths: ")
+        english=input("enter the marks in english: ")
+        biology=input("enter the marks in biology: ")
+        cs=input("enter the marks in cs: ")
+        kannada=input("enter the marks in kannada: ")
+        hindi=input("enter the marks in hindi: ")
+        sanskrit=input("enter the marks in sanskrit: ")
+        cur.execute("insert into student values({},'{}',{},'{}')".format(roll,name,age,branch))
+        cur.execute("insert into grades values({},{},{},{},{},{},{},{},{},{})".format(roll,physics, chemistry,maths,english,biology,cs,kannada,hindi,sanskrit))
+        cur.execute("insert into attendance values({},{})".format(roll,attendance))
+        cur.execute("insert into student_courses values({},'{}','{}','{}','{}','{}')".format(roll,'no','no','no','no','no'))
+        if int(cs)>0:
+          cur.execute("update student_courses set c5='yes'")
+        if int(biology)>0:
+          cur.execute("update student_courses set c5='yes'")
+        if int(kannada)>0:
+          cur.execute("update student_courses set c7='yes'")
+        if int(hindi)>0:
+          cur.execute("update student_courses set c8='yes'")
+        if int(sanskrit)>0:
+          cur.execute("update student_courses set c9='yes'")
+        con.commit()
+        
