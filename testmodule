@@ -1,6 +1,6 @@
 import mysql.connector
 import pandas
-con=mysql.connector.connect(user='root',host='localhost',passwd='Captain@123',database='student_management')
+con=mysql.connector.connect(user='root',host='localhost',passwd='1234',database='student_management')
 cur=con.cursor()
 def is_connected():
         if con.is_connected():
@@ -41,7 +41,7 @@ def percentage():
         print("the percentage of the student is: ",percent)
 def report_card():
     roll_num=input("Enter the roll number of the student: ")
-    con=sql.connect(host='localhost',user='root',passwd='Captain@123',database='student_management')
+    con=sql.connect(host='localhost',user='root',passwd='12334',database='student_management')
     cur=con.cursor()
     res=cur.execute("select * from student where student_id={}".format(roll_num))
     data1=cur.fetchall()
@@ -58,7 +58,7 @@ Course={}'''.format(i[1],i[0],i[2],i[3]))
         plt.pie(x,labels=mylabels,autopct='%1.1f%%')
         plt.title('Student attendance')
         plt.show()
-    #bar chart showing grades
+    bar chart showing grades
     res3=cur.execute('select * from grades where student_id={}'.format(roll_num))
     marks=cur.fetchall()
     for marks in marks:
